@@ -4,7 +4,7 @@ This guide covers configuring S3 access and installing the PEcAn conda environme
 
 The environment is downloaded from a project fileserver hosted by NCSA that speaks the S3 protocol. This is _not_ an Amazon service — if you ever see an error message containing `amazonaws.com`, something is misconfigured.
 
-Note that the full install may take 30 minutes or more.
+Note that the full install may take over an hour.
 
 Note: do not install this environment to the same location of an existing environment unless you remove the existing one first.
 
