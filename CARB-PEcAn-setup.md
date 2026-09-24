@@ -113,7 +113,7 @@ With the AWS CLI v2 loaded and configured, and with Conda available to you, you 
 
 In this example, `~/.conda/envs/pecan-all` is the target location, but you may want to put this somewhere other than your home directory.
 
-The version specified here (`1.18`) is the newest version available at this writing in September 2026, but this will change over time. Choose a target location with the expectation that you will need to install a new version in the future.
+The version specified here (`1.19`) is the newest version available at this writing in September 2026, but this will change over time. Choose a target location with the expectation that you will need to install a new version in the future.
 
 ### With export
 
