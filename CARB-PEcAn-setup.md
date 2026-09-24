@@ -17,7 +17,7 @@ A conda distribution (e.g. miniconda) must be on your path. If it is not present
 
 **Note**: These instructions were written assuming AWS CLI version 2.0 or greater. We have run it successfully with versions as old as 1.45.1 and it should run successfully with any AWS CLI version later than 1.29.
 
-You should be able to load a compatible version of the AWS CLI by executing:
+The CARB HPC team has made a suitable version of AWS CLIv2 available to you, and you should be able to load this by executing:
 ```bash
 module load awscli_v2
 ```
@@ -26,23 +26,7 @@ Your AWS CLI version can be confirmed with:
 aws --version
 ```
 
-<details>
-<summary>Install AWS CLI if it isn’t already available</summary>
-```sh
-(
-  aws_install_tmp=$(mktemp -d)
-  cd "$aws_install_tmp" || exit 1
-  curl -fL https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip \
-    -o awscliv2.zip &&
-  unzip -q awscliv2.zip &&
-  ./aws/install --install-dir "$HOME/.local/aws-cli" \
-    --bin-dir "$HOME/.local/bin"
-)
-
-export PATH="$HOME/.local/bin:$PATH"
-aws --version
-```
-</details>
+**Note**: if the above module and AWS commands are not successful, stop here, and contact your HPC team for assistance with obtaining the correct version of the AWS CLI.
 
 The AWS CLI is used to download files from the project fileserver. You will need five pieces of information to configure it:
 
@@ -72,7 +56,7 @@ aws_access_key_id = your24digitkeyidhere
 aws_secret_access_key = yoursecretgoeshereitshouldbe64digitslong
 ```
 
-**Note**: it is strongly recommended that you name your profile `magic`, as this is the default profile name used in aws-dependent areas of the magic codebase. If you wish to use a different profile name, you will need to update the user-facing configuration of the magic CLIs, as well as any AWS CLI commands you run.
+**Note**: it is __strongly recommended__ that you name your profile `magic`, as this is the default profile name used in aws-dependent areas of the magic codebase. If you wish to use a different profile name, you will need to update the user-facing configuration of the magic CLIs, as well as any AWS CLI commands you run.
 
 ### Set endpoint URL
 
@@ -109,45 +93,23 @@ Once we have Access to the S3 bucket, Conda is used to install all of the other 
 conda --version
 ```
 
-If this fails, you need to either load or install Conda.
+If this fails, you need to install Conda.
 
 <details>
-<summary>Load or Install Conda</summary>
-### Module Load on HPC
-
-### Load a Conda module on HPC
-
-On an HPC with modules, you may need to load a module first.
-
-First discover the module name:
-
-```sh
-module keyword conda
-```
-
-Depending on the cluster, it may be `miniconda3`, `miniforge3`, `miniforge3-python`, `miniconda3`, `anaconda3`, or something else. 
-
-Then load it, e.g.:
-
-```sh
-module load miniforge3
-```
-
-Then load it:
-
-```sh
-module load miniconda3
-```
+<summary>Install Conda</summary>
 
 ### Install Conda
 
-If the module is not available, you can install miniconda or miniforge. 
-See the [official Conda installation instructions](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
+As noted above, installing conda yourself is a quite simple process. Here, we will use miniconda.
+
+Follow this guide [to install conda](https://www.anaconda.com/docs/getting-started/miniconda/install/overview).
 
 </details>
 
 
 ## Install the PEcAn conda environment
+
+With the AWS CLI v2 loaded and configured, and with Conda available to you, you are now ready to install the PEcAn Environment.
 
 In this example, `~/.conda/envs/pecan-all` is the target location, but you may want to put this somewhere other than your home directory.
 
