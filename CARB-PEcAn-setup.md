@@ -4,7 +4,7 @@ This guide covers configuring S3 access and installing the PEcAn conda environme
 
 The environment is downloaded from a project fileserver hosted by NCSA that speaks the S3 protocol. This is _not_ an Amazon service — if you ever see an error message containing `amazonaws.com`, something is misconfigured.
 
-Note that the full install may take 30 minutes or more.
+Note that the full install may take over an hour.
 
 Note: do not install this environment to the same location of an existing environment unless you remove the existing one first.
 
@@ -17,7 +17,7 @@ A conda distribution (e.g. miniconda) must be on your path. If it is not present
 
 **Note**: These instructions were written assuming AWS CLI version 2.0 or greater. We have run it successfully with versions as old as 1.45.1 and it should run successfully with any AWS CLI version later than 1.29.
 
-You should be able to load a compatible version of the AWS CLI by executing:
+The CARB HPC team has made a suitable version of AWS CLIv2 available to you, and you should be able to load this by executing:
 ```bash
 module load awscli_v2
 ```
@@ -25,6 +25,8 @@ Your AWS CLI version can be confirmed with:
 ```bash
 aws --version
 ```
+
+**Note**: if the above module and AWS commands are not successful, stop here, and contact your HPC team for assistance with obtaining the correct version of the AWS CLI.
 
 The AWS CLI is used to download files from the project fileserver. You will need five pieces of information to configure it:
 
@@ -54,7 +56,7 @@ aws_access_key_id = your24digitkeyidhere
 aws_secret_access_key = yoursecretgoeshereitshouldbe64digitslong
 ```
 
-**Note**: it is strongly recommended that you name your profile `magic`, as this is the default profile name used in aws-dependent areas of the magic codebase. If you wish to use a different profile name, you will need to update the user-facing configuration of the magic CLIs, as well as any AWS CLI commands you run.
+**Note**: it is __strongly recommended__ that you name your profile `magic`, as this is the default profile name used in aws-dependent areas of the magic codebase. If you wish to use a different profile name, you will need to update the user-facing configuration of the magic CLIs, as well as any AWS CLI commands you run.
 
 ### Set endpoint URL
 
@@ -81,12 +83,37 @@ aws s3 ls --profile magic s3://carb/
 ```bash
 AWS_PROFILE=magic aws s3 ls s3://carb/
 ```
+## Ensure Conda is available
 
-## Install
+Once we have Access to the S3 bucket, Conda is used to install all of the other dependencies.
+
+### Check that Conda is avaialable
+
+```bash
+conda --version
+```
+
+If this fails, you need to install Conda.
+
+<details>
+<summary>Install Conda</summary>
+
+### Install Conda
+
+As noted above, installing conda yourself is a quite simple process. Here, we will use miniconda.
+
+Follow this guide [to install conda](https://www.anaconda.com/docs/getting-started/miniconda/install/overview).
+
+</details>
+
+
+## Install the PEcAn conda environment
+
+With the AWS CLI v2 loaded and configured, and with Conda available to you, you are now ready to install the PEcAn Environment.
 
 In this example, `~/.conda/envs/pecan-all` is the target location, but you may want to put this somewhere other than your home directory.
 
-The version specified here (`1.15`) is the newest version available at this writing in August 2026, but this will change over time. Choose a target location with the expectation that you will need to install a new version in the future.
+The version specified here (`1.19`) is the newest version available at this writing in September 2026, but this will change over time. Choose a target location with the expectation that you will need to install a new version in the future.
 
 ### With export
 
@@ -95,7 +122,7 @@ Exporting `AWS_PROFILE` once for the session means all subsequent commands pick 
 ```bash
 export AWS_PROFILE=magic
 aws s3 cp s3://carb/deploy/setup-pecan-env.sh ./
-bash setup-pecan-env.sh 1.15 ~/.conda/envs/pecan-all
+bash setup-pecan-env.sh 1.18 ~/.conda/envs/pecan-all
 ```
 
 ### Without export
@@ -104,7 +131,7 @@ If you prefer not to export, pass the profile explicitly on each command:
 
 ```bash
 aws s3 cp --profile magic s3://carb/deploy/setup-pecan-env.sh ./
-AWS_PROFILE=magic bash setup-pecan-env.sh 1.15 ~/.conda/envs/pecan-all
+AWS_PROFILE=magic bash setup-pecan-env.sh 1.18 ~/.conda/envs/pecan-all
 ```
 
 ### Activate the environment
