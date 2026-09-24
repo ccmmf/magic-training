@@ -26,6 +26,24 @@ Your AWS CLI version can be confirmed with:
 aws --version
 ```
 
+<details>
+<summary>Install AWS CLI if it isn’t already available</summary>
+```sh
+(
+  aws_install_tmp=$(mktemp -d)
+  cd "$aws_install_tmp" || exit 1
+  curl -fL https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip \
+    -o awscliv2.zip &&
+  unzip -q awscliv2.zip &&
+  ./aws/install --install-dir "$HOME/.local/aws-cli" \
+    --bin-dir "$HOME/.local/bin"
+)
+
+export PATH="$HOME/.local/bin:$PATH"
+aws --version
+```
+</details>
+
 The AWS CLI is used to download files from the project fileserver. You will need five pieces of information to configure it:
 
 1. **Profile name**: `magic`
